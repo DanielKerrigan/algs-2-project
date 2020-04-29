@@ -1,1 +1,1 @@
-# algs-2-project
+# Algorithms 2 Project

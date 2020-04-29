@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Parallel Coordinates</title>
+
+        <link rel="stylesheet" href="style.css">
+
+        <script src="d3/d3.js" defer></script>
+        <script src="d3/d3-array.js" defer></script>
+
+        <script src="visualizations/parallel.js" defer></script>
+
+        <script src="main.js" defer></script>
+
+    </head>
+
+    <body>
+        <header>
+            <h1>Reducing Edge Crossings in Parallel Coordinates</h1>
+        </header>
+
+        <nav>
+            <h2>Index</h2>
+            <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#references">References</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="intro">
+                <h2>Introduction</h2>
+                <div id="pc1"></div>
+            </section>
+     
+            <section id="references">
+                <h2>References</h2>
+
+                <h3>Papers</h3>
+                <ol>
+                    <li>Ankerst, Mihael, et al. “Similarity Clustering of Dimensions for an Enhanced Visualization of Multidimensional Data.” <cite>Proceedings IEEE Symposium on Information Visualization (Cat. No.98TB100258)</cite>, 1998, <a href="https://doi.org/10.1109/INFVIS.1998.729559">doi:10.1109/infvis.1998.729559</a>.</li>
+                    <li>Dasgupta, Aritra, and Robert Kosara. “Pargnostics: Screen-Space Metrics for Parallel Coordinates.” <cite>IEEE Transactions on Visualization and Computer Graphics</cite>, vol. 16, no. 6, 2010, pp. 1017–1026., <a href="https://doi.org/10.1109/TVCG.2010.184">doi:10.1109/tvcg.2010.184</a>.</li>
+                    <li>Heinrich, Julian, and Daniel Weiskopf. “State of the Art of Parallel Coordinates.” <cite>Eurographics</cite>, 2013, <a href="http://dx.doi.org/10.2312/conf/EG2013/stars/095-116">doi:10.2312/conf/EG2013/stars/095-116</a>.</li>
+                    <li>Hurley, C. B., and R. W. Oldford. “Pairwise Display of High-Dimensional Information via Eulerian Tours and Hamiltonian Decompositions.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 19, no. 4, 2010, pp. 861–886., <a href="https://www.jstor.org/stable/25765378">doi:10.1198/jcgs.2010.09136</a>.</li>
+                    <li>Hurley, Catherine B. “Clustering Visualizations of Multidimensional Data.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 13, no. 4, 2004, pp. 788–806., <a href="https://www.jstor.org/stable/27594078">doi:10.1198/106186004x12425</a>.</li>
+                    <li>Peng, Wei, et al. “Clutter Reduction in Multi-Dimensional Data Visualization Using Dimension Reordering.” <cite>IEEE Symposium on Information Visualization</cite>, 2004, <a href="https://doi.org/10.1109/INFVIS.2004.15">doi:10.1109/infvis.2004.15</a>.</li>
+                </ol>
+
+                <h3>Software</h3>
+                <ul>
+                    <li>I made the visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, the creator of D3. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>. The tooltips are also based on his <a href="https://observablehq.com/@d3/line-chart-with-tooltip">example line chart with tooltip</a>.</li>
+                </ul>
+
+                <h3>Datasets</h3>
+                <ul>
+                    <li><a href="http://lib.stat.cmu.edu/datasets/">Cars</a></li>
+                </ul>
+            </section>
+        </main>
+    </body>
+</html>
