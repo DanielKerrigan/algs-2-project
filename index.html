@@ -24,6 +24,9 @@
             <h2>Index</h2>
             <ul>
                 <li><a href="#intro">Introduction</a></li>
+                <li><a href="#edge-crossings">Edge Crossings</a></li>
+                <li><a href="#complexity">Complexity</a></li>
+                <li><a href="#algorithms">Algorithms</a></li>
                 <li><a href="#references">References</a></li>
             </ul>
         </nav>
@@ -32,9 +35,23 @@
             <section id="intro">
                 <h2>Introduction</h2>
                 <div>
-                  <button id="shuffle">Shuffle</button>
+                  <button id="shuffle">Shuffle Axes</button>
                   <div id="pc1"></div>
                 </div>
+            </section>
+
+            <section id="edge-crossings">
+                <h2>Edge Crossings</h2>
+                <img src="visualizations/edge-crossing.svg">
+            </section>
+
+            <section id="complexity">
+                <h2>Complexity</h2>
+            </section>
+
+
+            <section id="algorithms">
+                <h2>Algorithms</h2>
             </section>
      
             <section id="references">
@@ -52,13 +69,21 @@
 
                 <h3>Software</h3>
                 <ul>
+                    <li>The code for this project is in the following <a href="https://github.com/DanielKerrigan/algs-2-project">GitHub repository</a>.</li>
                     <li>I made the visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, the creator of D3. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>. The tooltips are also based on his <a href="https://observablehq.com/@d3/line-chart-with-tooltip">example line chart with tooltip</a>.</li>
-                    <li>The design of this site is based on a <a href="https://jgthms.com/web-design-in-4-minutes/">guide by Jeremy Thomas</a></li>
+                    <li>The design of this site is based on a <a href="https://jgthms.com/web-design-in-4-minutes/">guide by Jeremy Thomas</a>.</li>
                 </ul>
 
                 <h3>Datasets</h3>
                 <ul>
                     <li><a href="http://lib.stat.cmu.edu/datasets/">Cars</a></li>
+                    <li>
+                        <a href="https://archive.ics.uci.edu/ml/datasets/Wine+Quality">Wine Quality</a>
+
+                        <ul>
+                            <li>Cortez, Paulo, et al. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” <cite>Decision Support Systems</cite>, vol. 47, no. 4, 2009, pp. 547–553., <a href="https://doi.org/10.1016/j.dss.2009.05.016">doi:10.1016/j.dss.2009.05.016</a>.</li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
         </main>

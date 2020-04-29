@@ -1,0 +1,37 @@
+<svg width="300" height="300" font-family="sans-serif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- axes -->
+  <g stroke="black">
+    <line x1="10%" y1="10%" x2="10%" y2="90%"/>
+    <line x1="90%" y1="10%" x2="90%" y2="90%"/>
+  </g>  
+
+  <!-- axis labels -->
+  <g font-size="12" text-anchor="middle">
+    <text x="10%" y="10%" dy="-2">Axis 1</text>
+    <text x="90%" y="10%" dy="-2">Axis 2</text>
+  </g>
+
+  <!-- lines -->
+  <g stroke="#5C068C">
+    <line x1="10%" y1="25%" x2="90%" y2="75%"/>
+    <line x1="10%" y1="75%" x2="90%" y2="25%"/>
+  </g>
+
+  <!-- line labels -->
+  <text x="10%" y="25%" dx="-4" text-anchor="end">
+    l<tspan dy="2" font-size="10">1</tspan>
+  </text>
+  
+  <text x="10%" y="75%" dx="-4" text-anchor="end">
+    l<tspan dy="2" font-size="10">2</tspan>
+  </text>
+
+  <text x="90%" y="75%" dx="4" text-anchor="begin">
+    r<tspan dy="2" font-size="10">1</tspan>
+  </text>
+  
+  <text x="90%" y="25%" dx="4" text-anchor="begin">
+    r<tspan dy="2" font-size="10">2</tspan>
+  </text>
+  
+</svg>
