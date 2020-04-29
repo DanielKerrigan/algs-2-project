@@ -14,7 +14,7 @@ function parallel() {
     right: 50
   };
 
-  let width = 800 - margin.left - margin.right;
+  let width = 900 - margin.left - margin.right;
   let height = 500 - margin.top - margin.bottom;
   let columns = [];
 

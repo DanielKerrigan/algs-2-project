@@ -1,0 +1,56 @@
+<svg width="600" height="400" font-family="sans-serif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g transform="translate(0,50)">
+    <!-- K5 -->
+    <g>
+      <!-- edges -->
+      <g fill="none" stroke="black">
+        <line x1="270" y1="120" x2="150" y2="30"/><line x1="225" y1="270" x2="150" y2="30"/><line x1="225" y1="270" x2="270" y2="120"/><line x1="75" y1="270" x2="150" y2="30"/><line x1="75" y1="270" x2="270" y2="120"/><line x1="75" y1="270" x2="225" y2="270"/><line x1="30" y1="120" x2="150" y2="30"/><line x1="30" y1="120" x2="270" y2="120"/><line x1="30" y1="120" x2="225" y2="270"/><line x1="30" y1="120" x2="75" y2="270"/>
+      </g>
+
+      <!-- edge labels -->
+
+      <g font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle">
+        <text x="210" y="75">w<tspan font-size="8" dy="4">BA</tspan></text><text x="187.5" y="150">w<tspan font-size="8" dy="4">CA</tspan></text><text x="247.5" y="195">w<tspan font-size="8" dy="4">CB</tspan></text><text x="112.5" y="150">w<tspan font-size="8" dy="4">DA</tspan></text><text x="172.5" y="195">w<tspan font-size="8" dy="4">DB</tspan></text><text x="150" y="270">w<tspan font-size="8" dy="4">DC</tspan></text><text x="90" y="75">w<tspan font-size="8" dy="4">EA</tspan></text><text x="150" y="120">w<tspan font-size="8" dy="4">EB</tspan></text><text x="127.5" y="195">w<tspan font-size="8" dy="4">EC</tspan></text><text x="52.5" y="195">w<tspan font-size="8" dy="4">ED</tspan></text>
+      </g>
+
+      <g font-size="12" fill="black" text-anchor="middle">
+        <text x="210" y="75">w<tspan font-size="8" dy="4">BA</tspan></text><text x="187.5" y="150">w<tspan font-size="8" dy="4">CA</tspan></text><text x="247.5" y="195">w<tspan font-size="8" dy="4">CB</tspan></text><text x="112.5" y="150">w<tspan font-size="8" dy="4">DA</tspan></text><text x="172.5" y="195">w<tspan font-size="8" dy="4">DB</tspan></text><text x="150" y="270">w<tspan font-size="8" dy="4">DC</tspan></text><text x="90" y="75">w<tspan font-size="8" dy="4">EA</tspan></text><text x="150" y="120">w<tspan font-size="8" dy="4">EB</tspan></text><text x="127.5" y="195">w<tspan font-size="8" dy="4">EC</tspan></text><text x="52.5" y="195">w<tspan font-size="8" dy="4">ED</tspan></text>
+      </g>
+
+      <!-- vertices -->
+      <g fill="black">
+        <circle r="5" cx="150" cy="30"/><circle r="5" cx="270" cy="120"/><circle r="5" cx="225" cy="270"/><circle r="5" cx="75" cy="270"/><circle r="5" cx="30" cy="120"/>
+      </g>
+
+      <!-- vertex labels -->
+      <g font-size="12" fill="black" text-anchor="middle">
+        <text x="150" y="24">A</text><text x="270" y="114">B</text><text x="225" y="285">C</text><text x="75" y="285">D</text><text x="30" y="114">E</text>
+      </g>
+    </g>
+
+
+    <g>
+      <circle r="5" cx="400" cy="120"/>
+
+      <text x="400" y="120" dx="10" dy="4" font-size="12" text-anchor="middle" dominant-baseline="middle">F</text>
+
+      <line stroke="black" fill="none" x1="150" y1="30" x2="400" y2="120"/><line stroke="black" fill="none" x1="270" y1="120" x2="400" y2="120"/><line stroke="black" fill="none" x1="225" y1="270" x2="400" y2="120"/>
+
+      <text font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle" dominant-baseline="middle" x="275" y="75">0</text><text font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle" dominant-baseline="middle" x="335" y="120">0</text><text font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle" dominant-baseline="middle" x="312.5" y="195">0</text>
+
+      <text font-size="12" fill="black" text-anchor="middle" dominant-baseline="middle" x="275" y="75">0</text><text font-size="12" fill="black" text-anchor="middle" dominant-baseline="middle" x="335" y="120">0</text><text font-size="12" fill="black" text-anchor="middle" dominant-baseline="middle" x="312.5" y="195">0</text>
+
+      <path d="M 30 120
+               C 150 -40, 250 -40, 400 120" stroke="black" fill="none"/>
+      
+      <path d="M 75 270
+               C 150 350, 270 350, 400 120" stroke="black" fill="none"/>
+
+      <text font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle" dominant-baseline="middle" x="215" y="0">0</text>
+      <text font-size="12" fill="black" text-anchor="middle" dominant-baseline="middle" x="215" y="0">0</text>
+
+      <text font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle" dominant-baseline="middle" x="215" y="312">0</text>
+      <text font-size="12" fill="black" text-anchor="middle" dominant-baseline="middle" x="215" y="312">0</text>
+    </g>
+  </g>
+</svg>
