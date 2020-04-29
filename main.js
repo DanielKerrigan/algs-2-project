@@ -1,12 +1,37 @@
 Promise.all([
   d3.csv('data/cars.csv', d3.autoType),
-]).then((datasets) => {
-  manager(datasets);
+]).then(([carsDataset]) => {
+  const cars = {
+    'columns': Object.keys(carsDataset[0])
+      .filter(d => d !== 'label' && d !== 'origin'),
+    'data': carsDataset
+  };
+
+  manager([cars]);
 });
 
 
+
 function manager([cars]) {
-  d3.select('#pc1')
-      .datum(cars)
-      .call(parallel());
+  introduction(cars);
+}
+
+
+function introduction(cars) {
+  const cols = cars.columns.slice();
+
+  const chart = parallel()
+    .columns(cols)
+
+  const div = d3.select('#pc1');
+  const button = d3.select('#shuffle');
+
+  div.datum(cars.data)
+      .call(chart);
+
+  button.on('click', function() {
+    d3.shuffle(cols);
+    chart.columns(cols);
+    div.call(chart);
+  });
 }

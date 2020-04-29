@@ -25,10 +25,15 @@ function parallel() {
 
       if (columns.length === 0) {
         columns = Object.keys(dataset[0])
-            .filter(d => d !== 'label');
+          .filter(d => d !== 'label');
       }
 
-      const data = dataset.map(d => columns.map(c => ({key: c, value: d[c]})));
+      const data = dataset.map(d => {
+        const vals = columns.map(c => ({key: c, value: d[c]}));
+        vals.label = d.label;
+        return vals;
+      });
+
       const extent = new Map(columns.map(c => [c, d3.extent(dataset, d => d[c])]));
 
       const x = d3.scalePoint()
@@ -38,7 +43,7 @@ function parallel() {
       const y = new Map(columns.map(c => {
         const scale = d3.scaleLinear()
            .domain(extent.get(c)).nice()
-           .range([height, 0]);
+           .rangeRound([height, 0]);
         return [c, scale]
       }))
 
@@ -73,6 +78,7 @@ function parallel() {
 
       const g = svg.select('.vis-container')
           .attr('transform', `translate(${margin.left},${margin.top})`)
+      const axesGroup = g.select('.axes');
 
       const line = d3.line()
           .x(d => x(d.key))
@@ -80,7 +86,7 @@ function parallel() {
 
       g.select('.lines')
         .selectAll('.line')
-        .data(data)
+        .data(data, d => d.label)
         .join('path')
           .attr('class', 'line')
           .attr('d', line)
@@ -88,20 +94,36 @@ function parallel() {
           .attr('fill', 'none')
           .attr('stroke-opacity', 0.8);
 
-      /*const yAxes = columns.map(c => ({
+      const yAxes = columns.map(c => ({
         column: c,
         axis: d3.axisLeft(y.get(c))
+            .ticks(5)
       }));
 
-      g.select('.y-axes')
+      axesGroup.select('.y-axes')
         .selectAll('.y-axis')
         .data(yAxes, d => d.column)
         .join('g')
           .attr('class', 'y-axis')
-          .attr('transform', d => `translate(${x(d)},0)`)
-          .call(g => g.data().axis(g));*/
+          .attr('transform', d => `translate(${x(d.column)},0)`)
+          .each(function(d, i) {
+            d3.select(this)
+                .call(d.axis)
+                .call(g => {
+                  if (g.selectAll('.tick .halo').empty()) {
+                    g.selectAll('.tick text')
+                      .clone(true)
+                      .lower()
+                        .attr('fill', 'none')
+                        .attr('stroke', 'white')
+                        .attr('stroke-width', '3')
+                        .attr('stroke-linecap', 'round')
+                        .attr('class', 'halo')
+                  }
+                })
+          });
 
-      g.select('.x-axis')
+      axesGroup.select('.x-axis')
           .attr('transform', `translate(0,0)`)
           .call(d3.axisTop(x).tickSize(0).tickPadding(10))
           .call(g => g.select('.domain').remove());
