@@ -11,9 +11,9 @@ Promise.all([
 });
 
 
-
 function manager([cars]) {
   introduction(cars);
+  edgeHistogram();
 }
 
 
@@ -34,4 +34,10 @@ function introduction(cars) {
     chart.columns(cols);
     div.call(chart);
   });
+}
+
+
+function edgeHistogram() {
+  const div = d3.select('#edge-histogram');
+  histogramInteractive(div);
 }

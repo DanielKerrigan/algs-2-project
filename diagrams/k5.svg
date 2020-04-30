@@ -1,17 +1,17 @@
 <svg width="300" height="300" font-family="sans-serif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <!-- edges -->
   <g fill="none" stroke="black">
-    <line x1="90%" y1="40%" x2="50%" y2="10%"/><line x1="75%" y1="90%" x2="50%" y2="10%"/><line x1="75%" y1="90%" x2="90%" y2="40%"/><line x1="25%" y1="90%" x2="50%" y2="10%"/><line x1="25%" y1="90%" x2="90%" y2="40%"/><line x1="25%" y1="90%" x2="75%" y2="90%"/><line x1="10%" y1="40%" x2="50%" y2="10%"/><line x1="10%" y1="40%" x2="90%" y2="40%"/><line x1="10%" y1="40%" x2="75%" y2="90%"/><line x1="10%" y1="40%" x2="25%" y2="90%"/>
+    <line x1="50%" y1="10%" x2="90%" y2="40%"/><line x1="50%" y1="10%" x2="75%" y2="90%"/><line x1="50%" y1="10%" x2="25%" y2="90%"/><line x1="50%" y1="10%" x2="10%" y2="40%"/><line x1="90%" y1="40%" x2="75%" y2="90%"/><line x1="90%" y1="40%" x2="25%" y2="90%"/><line x1="90%" y1="40%" x2="10%" y2="40%"/><line x1="75%" y1="90%" x2="25%" y2="90%"/><line x1="75%" y1="90%" x2="10%" y2="40%"/><line x1="25%" y1="90%" x2="10%" y2="40%"/>
   </g>
 
   <!-- edge labels -->
 
   <g font-size="12" fill="none" stroke="white" stroke-width="5" stroke-cap="round" text-anchor="middle">
-    <text x="70%" y="25%">w<tspan font-size="8" dy="4">BA</tspan></text><text x="62.5%" y="50%">w<tspan font-size="8" dy="4">CA</tspan></text><text x="82.5%" y="65%">w<tspan font-size="8" dy="4">CB</tspan></text><text x="37.5%" y="50%">w<tspan font-size="8" dy="4">DA</tspan></text><text x="57.5%" y="65%">w<tspan font-size="8" dy="4">DB</tspan></text><text x="50%" y="90%">w<tspan font-size="8" dy="4">DC</tspan></text><text x="30%" y="25%">w<tspan font-size="8" dy="4">EA</tspan></text><text x="50%" y="40%">w<tspan font-size="8" dy="4">EB</tspan></text><text x="42.5%" y="65%">w<tspan font-size="8" dy="4">EC</tspan></text><text x="17.5%" y="65%">w<tspan font-size="8" dy="4">ED</tspan></text>
+    <text x="70%" y="25%">w<tspan font-size="8" dy="4">AB</tspan></text><text x="62.5%" y="50%">w<tspan font-size="8" dy="4">AC</tspan></text><text x="37.5%" y="50%">w<tspan font-size="8" dy="4">AD</tspan></text><text x="30%" y="25%">w<tspan font-size="8" dy="4">AE</tspan></text><text x="82.5%" y="65%">w<tspan font-size="8" dy="4">BC</tspan></text><text x="57.5%" y="65%">w<tspan font-size="8" dy="4">BD</tspan></text><text x="50%" y="40%">w<tspan font-size="8" dy="4">BE</tspan></text><text x="50%" y="90%">w<tspan font-size="8" dy="4">CD</tspan></text><text x="42.5%" y="65%">w<tspan font-size="8" dy="4">CE</tspan></text><text x="17.5%" y="65%">w<tspan font-size="8" dy="4">DE</tspan></text>
   </g>
 
   <g font-size="12" fill="black" text-anchor="middle">
-    <text x="70%" y="25%">w<tspan font-size="8" dy="4">BA</tspan></text><text x="62.5%" y="50%">w<tspan font-size="8" dy="4">CA</tspan></text><text x="82.5%" y="65%">w<tspan font-size="8" dy="4">CB</tspan></text><text x="37.5%" y="50%">w<tspan font-size="8" dy="4">DA</tspan></text><text x="57.5%" y="65%">w<tspan font-size="8" dy="4">DB</tspan></text><text x="50%" y="90%">w<tspan font-size="8" dy="4">DC</tspan></text><text x="30%" y="25%">w<tspan font-size="8" dy="4">EA</tspan></text><text x="50%" y="40%">w<tspan font-size="8" dy="4">EB</tspan></text><text x="42.5%" y="65%">w<tspan font-size="8" dy="4">EC</tspan></text><text x="17.5%" y="65%">w<tspan font-size="8" dy="4">ED</tspan></text>
+    <text x="70%" y="25%">w<tspan font-size="8" dy="4">AB</tspan></text><text x="62.5%" y="50%">w<tspan font-size="8" dy="4">AC</tspan></text><text x="37.5%" y="50%">w<tspan font-size="8" dy="4">AD</tspan></text><text x="30%" y="25%">w<tspan font-size="8" dy="4">AE</tspan></text><text x="82.5%" y="65%">w<tspan font-size="8" dy="4">BC</tspan></text><text x="57.5%" y="65%">w<tspan font-size="8" dy="4">BD</tspan></text><text x="50%" y="40%">w<tspan font-size="8" dy="4">BE</tspan></text><text x="50%" y="90%">w<tspan font-size="8" dy="4">CD</tspan></text><text x="42.5%" y="65%">w<tspan font-size="8" dy="4">CE</tspan></text><text x="17.5%" y="65%">w<tspan font-size="8" dy="4">DE</tspan></text>
   </g>
 
   <!-- vertices -->
