@@ -7,8 +7,8 @@
 
   <!-- axis labels -->
   <g font-size="12" text-anchor="middle">
-    <text x="10%" y="10%" dy="-2">Axis 1</text>
-    <text x="90%" y="10%" dy="-2">Axis 2</text>
+    <text x="10%" y="10%" dy="-2">Axis A</text>
+    <text x="90%" y="10%" dy="-2">Axis B</text>
   </g>
 
   <!-- lines -->
