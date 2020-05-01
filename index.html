@@ -10,6 +10,7 @@
         <script src="d3/d3-array.js" defer></script>
 
         <script src="util.js" defer></script>
+        <script src="data-processing.js" defer></script>
         <script src="visualizations/parallel.js" defer></script>
         <script src="visualizations/histogram-interactive.js" defer></script>
 
@@ -44,12 +45,29 @@
 
             <section id="edge-crossings">
                 <h2>Edge Crossings</h2>
+
                 <img src="diagrams/edge-crossing.svg">
+ 
                 <div id="edge-histogram">
                   <div id ="histogram-controls">
                     <button id="reset-histogram">Reset</button>
+                    <button id="random-histogram">Random</button>
                     <button id="calc-ec">Calculate Crossings</button>
                   </div>
+                </div>
+
+                <div id="edge-crossing-matrix">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Axis 1</th>
+                        <th>Axis 2</th>
+                        <th>Crosses</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
                 </div>
             </section>
 

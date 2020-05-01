@@ -12,5 +12,10 @@ h2 {
 }
 
 .axis .cell rect:hover {
-  fill: lightgray;
+    fill: lightgray;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 15px 0;
 }

@@ -14,6 +14,7 @@ Promise.all([
 function manager([cars]) {
   introduction(cars);
   edgeHistogram();
+  edgeCrossingMatrix(cars);
 }
 
 
@@ -40,4 +41,20 @@ function introduction(cars) {
 function edgeHistogram() {
   const div = d3.select('#edge-histogram');
   histogramInteractive(div);
+}
+
+
+function edgeCrossingMatrix(cars) {
+  const div = d3.select('#edge-crossing-matrix');
+  const {counts, countsMap} = calculateEdgeCrossings(cars);
+
+  div.select('tbody')
+    .selectAll('tr')
+    .data(counts.sort((a, b) => d3.ascending(a.crosses, b.crosses)))
+    .join('tr')
+      .call(tr => tr.append('td').text(d => d.axes[0]))
+      .call(tr => tr.append('td').text(d => d.axes[1]))
+      .call(tr => tr.append('td')
+          .style('text-align', 'right')
+          .text(d => d.crosses));
 }

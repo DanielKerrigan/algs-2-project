@@ -155,11 +155,10 @@ function histogramInteractive(div) {
   function thirdSetup() {
     third.append('text')
         .attr('fill', 'black')
-        .attr('dominant-baseline', 'hanging')
         .text('Crossings = ')
       .append('tspan')
-        .attr('dominant-baseline', 'hanging')
-        .attr('id', 'histogram-num-crossings');
+        .attr('id', 'histogram-num-crossings')
+        .text('0');
   }
 
 
@@ -170,7 +169,24 @@ function histogramInteractive(div) {
         update();
         updateLabel(0);
       });
-    
+
+    div.select('#random-histogram')
+      .on('click', function() {
+        reset();
+
+        gram = Array(size);
+        for (let i = 0; i < size; i++) {
+          gram[i] = Array(size);
+          for (let j = 0; j < size; j++) {
+            const rand = Math.random() < (1 / 3) ? 1 : 0;
+            gram[i][j] = {i, j, count: rand};
+          }
+        }
+
+        update();
+        updateLabel(0);
+      });
+ 
     div.select('#calc-ec')
       .on('click', function() {
         calculateCrossings();
