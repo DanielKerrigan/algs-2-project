@@ -19,3 +19,7 @@ table {
     border-collapse: separate;
     border-spacing: 15px 0;
 }
+
+img {
+  display: block;
+}

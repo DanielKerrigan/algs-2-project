@@ -75,7 +75,7 @@
                 </p>
 
                 <p>
-                  Following the notation used by Dasgupta and Kosara, \((l_i, r_i)\) represents a line segment from position \(l_i\) on the left axis to position \(r_i\) on the right axis [CITE]. If we have two lines like shown below,
+                  Following the notation used by Dasgupta and Kosara, \((l_i, r_i)\) represents a line segment from position \(l_i\) on the left axis to position \(r_i\) on the right axis [2]. If we have two lines like shown below,
                 </p>
 
                 <img src="diagrams/edge-crossing.svg">
@@ -109,7 +109,7 @@
                 </p>
 
                 <p>
-                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [CITE]. In this example, there are two axes, A and B, that are each 5 pixels high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axes. Or, you can click the "Random" button to add random edges. As add edges, the histogram to the right will update. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
+                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [2]. In this example, there are two axes, A and B, that are each 5 pixels high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axes. Or, you can click the "Random" button to add random edges. As add edges, the histogram to the right will update. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
                 </p>
 
                 <div id="edge-histogram">
@@ -144,7 +144,13 @@
 
               <section id="complexity">
                 <h3>Complexity</h3>
+
+                Once we know the number of edge crossings between each pair of axes, the next step is to find the optimal order of the axes that minimizes the total number of crossings. Ankerst et al. prove that this problem is NP-complete [1]. Hurley and Oldford represent this as a graph traversal problem [4]. To avoid confusion when describing this graph, I will refer to its edges as links. Consider a complete graph where the vertices represent the axes of our parallel coordinates and the weight of the links represent the number of edge crossings between the two axes. For example, say we have five axes, A-E, then \(w_{AB}\) represents the number of edge crossings between axis A and axis B. Our graph would then look like this:
+
                 <img src="diagrams/k5.svg">
+
+                Finding the order of the axes that minimizes the total number of edge crossings then becomes finding the shortest path through this graph that visits every node exactly once. That is, we want to find the shortest hamiltonian path. In [5], Hurley notes that this if we add an extra vertex to this graph and connect it to every other vertex with a weight of 0, then this becomes the traveling salesman problem.
+
                 <img src="diagrams/k5-tsp.svg">
               </section>
 

@@ -56,5 +56,5 @@ function edgeCrossingMatrix(cars) {
       .call(tr => tr.append('td').text(d => d.axes[1]))
       .call(tr => tr.append('td')
           .style('text-align', 'right')
-          .text(d => d.crosses));
+          .text(d => d3.format(',')(d.crosses)));
 }
