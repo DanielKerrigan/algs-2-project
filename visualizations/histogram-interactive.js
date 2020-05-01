@@ -16,7 +16,7 @@ function histogramInteractive(div) {
   const x = d3.scaleBand()
     .domain(d3.range(size))
     .range([0, width]);
-  
+
   const y = d3.scaleBand()
     .domain(d3.range(size))
     .range([height, 0]);
@@ -27,7 +27,7 @@ function histogramInteractive(div) {
 
   const first = svg.append('g')
       .attr('transform', `translate(${section(0) + margin.left},${margin.top})`);
-      
+
   const second = svg.append('g')
       .attr('transform', `translate(${section(1) + margin.left},${margin.top})`);
 
@@ -54,7 +54,7 @@ function histogramInteractive(div) {
         gram[i][j] = {i, j, count: 0};
       }
     }
-    
+
     leftSelected = -1;
     rightSelected = -1;
   }
@@ -90,7 +90,7 @@ function histogramInteractive(div) {
         .attr('y', -2)
         .attr('text-anchor', 'middle')
         .text('A');
-   
+
     right.append('text')
         .attr('x', x.bandwidth() / 2)
         .attr('y', -2)
@@ -114,7 +114,7 @@ function histogramInteractive(div) {
           clickedRect.attr('fill', 'lightgray');
         }
       });
- 
+
     right.selectAll('.cell')
       .on('click', function(d) {
         rightSelected = d;
@@ -137,12 +137,12 @@ function histogramInteractive(div) {
 
   function secondSetup() {
     second.append('text')
-        .attr('x', 0)
+        .attr('x', -2)
         .attr('y', height - y.bandwidth() / 2)
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
         .text('A↑');
-    
+
     second.append('text')
         .attr('x', x.bandwidth() / 2)
         .attr('y', height + 2)
@@ -151,7 +151,7 @@ function histogramInteractive(div) {
         .text('B→');
   }
 
-  
+
   function thirdSetup() {
     third.append('text')
         .attr('fill', 'black')
@@ -186,7 +186,7 @@ function histogramInteractive(div) {
         update();
         updateLabel(0);
       });
- 
+
     div.select('#calc-ec')
       .on('click', function() {
         calculateCrossings();
@@ -197,7 +197,7 @@ function histogramInteractive(div) {
   async function calculateCrossings() {
     let crossings = 0;
     const sleepTime = 300;
-    
+
     for (let i = 0; i < size; i++) {
       for (let j = size - 1; j >= 0; j--) {
         gram[i][j].square.attr('fill', 'lightblue');
@@ -208,7 +208,7 @@ function histogramInteractive(div) {
               gram[k][l].square.attr('fill', 'salmon');
               const num = (gram[i][j].count * gram[k][l].count);
               crossings += num;
-              
+
               if (num > 0) {
                 gram[k][l].square.attr('fill', 'lightgreen');
                 await sleep(sleepTime);
