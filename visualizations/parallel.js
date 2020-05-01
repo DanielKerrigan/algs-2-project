@@ -80,6 +80,8 @@ function parallel() {
           .attr('transform', `translate(${margin.left},${margin.top})`)
       const axesGroup = g.select('.axes');
 
+      const t = g.transition().duration(500);
+
       const line = d3.line()
           .x(d => x(d.key))
           .y(d => y.get(d.key)(d.value));
@@ -89,10 +91,12 @@ function parallel() {
         .data(data, d => d.label)
         .join('path')
           .attr('class', 'line')
-          .attr('d', line)
           .attr('stroke', color)
           .attr('fill', 'none')
-          .attr('stroke-opacity', 0.8);
+          .attr('stroke-opacity', 0.8)
+          .call(l => l.transition(t)
+              .attr('d', line)
+          );
 
       const yAxes = columns.map(c => ({
         column: c,
@@ -105,7 +109,10 @@ function parallel() {
         .data(yAxes, d => d.column)
         .join('g')
           .attr('class', 'y-axis')
-          .attr('transform', d => `translate(${x(d.column)},0)`)
+          .call(
+            g => g.transition(t)
+                .attr('transform', d => `translate(${x(d.column)},0)`)
+          )
           .each(function(d, i) {
             d3.select(this)
                 .call(d.axis)
@@ -121,13 +128,18 @@ function parallel() {
                         .attr('class', 'halo')
                   }
                 })
-          });
+          })
 
       axesGroup.select('.x-axis')
-          .attr('transform', `translate(0,0)`)
-          .call(d3.axisTop(x).tickSize(0).tickPadding(10))
-          .call(g => g.select('.domain').remove());
-
+        .selectAll('text')
+        .data(columns, d => d)
+        .join('text')
+          .text(d => d)
+          .attr('font-size', 10)
+          .attr('y', -10)
+          .attr('text-anchor', 'middle')
+          .call(text => text.transition(t)
+              .attr('x', d => x(d)))
     });
   }
 
