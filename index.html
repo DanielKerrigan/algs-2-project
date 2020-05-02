@@ -14,6 +14,7 @@
 
         <script src="util.js" defer></script>
         <script src="data-processing.js" defer></script>
+        <script src="visualizations/pair.js" defer></script>
         <script src="visualizations/parallel.js" defer></script>
         <script src="visualizations/histogram-interactive.js" defer></script>
 
@@ -50,7 +51,7 @@
                 </p>
 
                 <p>
-                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any order. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier with some axes orderings than others.
+                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any order. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier to detect with some axes orderings than others.
                 </p>
 
                 <p>
@@ -63,7 +64,11 @@
                 </div>
 
                 <p>
-                  Given this, we can try to find the order of the axes that optimizes some desired property. This process involves calculating a weight for each pair of axes and then finding the ordering of axes that minimizes or maximizes the sum of the weights. In this project, I will focus on minimizing the number of between axis edge crossings. The intuition behind this is that having a lot of edge crossings can make the visualization difficult to read.
+                  Given this, we can try to find the order of the axes that optimizes some desired property. This process involves calculating a weight or score for each pair of axes and then finding the ordering of axes that minimizes or maximizes the sum of the weights. There are many possible scoring methods. Dasgupta and Korsara propose metrics including number of edge crossings and angle of edge crossing [<a href="#dasgupta">2</a>], Hurley suggests maximizing the correlation between neighboring axes or minimizing total line length [<a href="#hurley">5</a>], Ankerst et al. propose similarity based measures [<a href="#ankerst">1</a>], and Peng et al. define a clutter metric based on number of outliers. The axis ordering section of Heinrich and Weiskopf's "State of the Art of Parallel Coordinates" was particularly helpful starting point [<a href="#heinrich">3</a>].
+                </p>
+
+                <p>
+                   In this project, I will focus on minimizing the number of between axis edge crossings. The intuition behind this is that having a lot of edge crossings can make the visualization difficult to read.
                 </p>
             </section>
 
@@ -75,7 +80,7 @@
                 </p>
 
                 <p>
-                  Following the notation used by Dasgupta and Kosara, \((l_i, r_i)\) represents a line segment from position \(l_i\) on the left axis to position \(r_i\) on the right axis [2]. If we have two lines like shown below,
+                  Following the notation used by Dasgupta and Kosara, \((l_i, r_i)\) represents a line segment from position \(l_i\) on the left axis to position \(r_i\) on the right axis [<a href="#dasgupta">2</a>]. If we have two lines like shown below,
                 </p>
 
                 <img src="diagrams/edge-crossing.svg">
@@ -85,7 +90,7 @@
                 </p>
 
                 <p>
-                  Dasgupta and Korsara propose another approach, which depends on the height of the visualization rather than on the size of the dataset. Parallel coordinates are visualized on screens that have discrete pixels. If an axis is  \(h\) pixels high, then \(l_i\) and \(r_i\) are in the range \([0, h)\). We can then create a two-dimensional histogram representing the lines between a pair of axes, with bins defined as follows.
+                  Dasgupta and Korsara propose another approach, which depends on the height of the visualization rather than on the size of the dataset. Parallel coordinates are visualized on screens that have a finite number of discrete pixels. If an axis is  \(h\) pixels high, then \(l_i\) and \(r_i\) are in the range \([0, h)\). We can then create a two-dimensional histogram representing the lines between a pair of axes, with bins defined as follows.
                 </p>
 
                 <p>\[b_{ij} = |\{ k | \lfloor l_k \rfloor = i \wedge \lfloor r_k \rfloor = j\}|\]</p>
@@ -93,23 +98,23 @@
                 <p>\(b_{ij}\) represents the number of lines that go from pixel \(i\) on the left axis to pixel \(j\) on the right axis. The authors state that this histogram can be used to calculate the number of edge crossings between the two axis:</p>
 
                 <p>
-                  \[\sum_{i=0}^{h-1} \sum_{j=0}^{h-1} \sum_{k=i+1}^{h-1} \sum_{l=j+1}^{h-1} b_{ij}b_{kl}\]
+                  \[\text{# crossings} = \sum_{i=0}^{h-1} \sum_{j=0}^{h-1} \sum_{k=i+1}^{h-1} \sum_{l=j+1}^{h-1} b_{ij}b_{kl}\]
                 </p>
 
                 <p>
-                  However, as best I can tell, this is incorrect. Consider the case when you have two parallel lines, \((0, 0)\) and \((1, 1)\). That is, one line goes from pixel 0 on the left axis to pixel 0 on the right axis and the other goes from pixel 1 on the left axis to pixel 1 on the right axis. In this situation, \(b_{00} = 1\) and \(b_{11} = 1\). The first iteration will add \(b_{00}b_{11} = 1\) to the count, even though there is no crossing. I realized this while making the below animation. It seems the algorithm can be salvaged by looping over the columns in reverse order. If we take \(\sum_{j=h-1}^{0}\) to mean counting down from \(h-1\) to \(0\), then we have:
+                  However, as best I can tell, this is incorrect. Consider the case when you have two parallel lines, \((0, 0)\) and \((1, 1)\). That is, one line goes from pixel 0 on the left axis to pixel 0 on the right axis and the other goes from pixel 1 on the left axis to pixel 1 on the right axis. In this situation, \(b_{00} = 1\) and \(b_{11} = 1\). The first iteration will add \(b_{00}b_{11} = 1\) to the count, even though there is no crossing. I realized this while making the below animation. It seems the algorithm can be corrected by looping over the columns in reverse order. If we take \(\sum_{j=h-1}^{0}\) to mean that \(j\) counts down from \(h-1\) to \(0\), then we have:
                 </p>
 
                 <p>
-                  \[\sum_{i=0}^{h-1} \sum_{j=h-1}^{0} \sum_{k=i+1}^{h-1} \sum_{l=j-1}^{0} b_{ij}b_{kl}\]
+                  \[\text{# crossings} = \sum_{i=0}^{h-1} \sum_{j=h-1}^{0} \sum_{k=i+1}^{h-1} \sum_{l=j-1}^{0} b_{ij}b_{kl}\]
                 </p>
 
                 <p>
-                  This algorithm is \(O(h^4)\), though as the authors note, \(b_{ij}\) is often 0, which reduces the amount of work needed to be done.
+                  This algorithm is \(O(h^4)\), though as the authors note, \(b_{ij}\) is often 0, which reduces the amount of work needed to be done, so it can be sensible when \(n >> h\).
                 </p>
 
                 <p>
-                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [2]. In this example, there are two axes, A and B, that are each 5 pixels high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axes. Or, you can click the "Random" button to add random edges. As add edges, the histogram to the right will update. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
+                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [<a href="#dasgupta">2</a>]. In this example, there are two axes, A and B, that are each 5 "pixels" high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axes. Or, you can click the "Random" button to add random edges. As you add edges, the histogram to the right will update accordingly. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
                 </p>
 
                 <div id="edge-histogram">
@@ -121,21 +126,24 @@
                 </div>
 
                 <p>
-                  We can run our edge crossing algorithm of choice to get the number of crossings between each possible pair of axes. The below table shows the results for the cars dataset.
+                  We can run our edge crossing algorithm of choice to get the number of crossings between each possible pair of axes. The below table shows the results for the cars dataset. You can click on a row of the table to visualize the edges between that pair of axes.
                 </p>
 
-                <div id="edge-crossing-matrix">
+                <div id="edge-crossing-table-vis">
                   <table>
                     <thead>
                       <tr>
-                        <th>Axis 1</th>
-                        <th>Axis 2</th>
-                        <th>Crosses</th>
+                        <th align="left">Axis 1</th>
+                        <th align="left">Axis 2</th>
+                        <th align="right">Crosses</th>
                       </tr>
                     </thead>
                     <tbody>
                     </tbody>
                   </table>
+
+                  <div id="axis-pair-vis">
+                  </div>
                 </div>
             </section>
 
@@ -145,11 +153,11 @@
               <section id="complexity">
                 <h3>Complexity</h3>
 
-                Once we know the number of edge crossings between each pair of axes, the next step is to find the optimal order of the axes that minimizes the total number of crossings. Ankerst et al. prove that this problem is NP-complete [1]. Hurley and Oldford represent this as a graph traversal problem [4]. To avoid confusion when describing this graph, I will refer to its edges as links. Consider a complete graph where the vertices represent the axes of our parallel coordinates and the weight of the links represent the number of edge crossings between the two axes. For example, say we have five axes, A-E, then \(w_{AB}\) represents the number of edge crossings between axis A and axis B. Our graph would then look like this:
+                Once we know the number of edge crossings between each pair of axes, the next step is to find the optimal order of the axes that minimizes the total number of crossings. Ankerst et al. prove that this problem is NP-complete [<a href="#ankerst">1</a>]. Hurley and Oldford represent this as a graph traversal problem [<a href="#oldford">4</a>]. To avoid confusion when describing this graph, I will refer to its edges as links. Consider a complete graph where the vertices represent the axes of our parallel coordinates and the weight of the links represent the number of edge crossings between the two axes. For example, say we have five axes, A-E, then \(w_{AB}\) represents the number of edge crossings between axis A and axis B. Our graph would then look like this:
 
                 <img src="diagrams/k5.svg">
 
-                Finding the order of the axes that minimizes the total number of edge crossings then becomes finding the shortest path through this graph that visits every node exactly once. That is, we want to find the shortest hamiltonian path. In [5], Hurley notes that this if we add an extra vertex to this graph and connect it to every other vertex with a weight of 0, then this becomes the traveling salesman problem.
+                Finding the order of the axes that minimizes the total number of edge crossings then becomes finding the shortest path through this graph that visits every node exactly once. That is, we want to find the shortest hamiltonian path. In [<a href="#hurley">5</a>], Hurley notes that this if we add an extra vertex to this graph and connect it to every other vertex with a weight of 0, then this becomes the traveling salesman problem.
 
                 <img src="diagrams/k5-tsp.svg">
               </section>
@@ -165,12 +173,24 @@
 
                 <h3>Papers</h3>
                 <ol>
-                    <li>Ankerst, Mihael, et al. “Similarity Clustering of Dimensions for an Enhanced Visualization of Multidimensional Data.” <cite>Proceedings IEEE Symposium on Information Visualization (Cat. No.98TB100258)</cite>, 1998, <a href="https://doi.org/10.1109/INFVIS.1998.729559">doi:10.1109/infvis.1998.729559</a>.</li>
-                    <li>Dasgupta, Aritra, and Robert Kosara. “Pargnostics: Screen-Space Metrics for Parallel Coordinates.” <cite>IEEE Transactions on Visualization and Computer Graphics</cite>, vol. 16, no. 6, 2010, pp. 1017–1026., <a href="https://doi.org/10.1109/TVCG.2010.184">doi:10.1109/tvcg.2010.184</a>.</li>
-                    <li>Heinrich, Julian, and Daniel Weiskopf. “State of the Art of Parallel Coordinates.” <cite>Eurographics</cite>, 2013, <a href="http://dx.doi.org/10.2312/conf/EG2013/stars/095-116">doi:10.2312/conf/EG2013/stars/095-116</a>.</li>
-                    <li>Hurley, C. B., and R. W. Oldford. “Pairwise Display of High-Dimensional Information via Eulerian Tours and Hamiltonian Decompositions.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 19, no. 4, 2010, pp. 861–886., <a href="https://www.jstor.org/stable/25765378">doi:10.1198/jcgs.2010.09136</a>.</li>
-                    <li>Hurley, Catherine B. “Clustering Visualizations of Multidimensional Data.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 13, no. 4, 2004, pp. 788–806., <a href="https://www.jstor.org/stable/27594078">doi:10.1198/106186004x12425</a>.</li>
-                    <li>Peng, Wei, et al. “Clutter Reduction in Multi-Dimensional Data Visualization Using Dimension Reordering.” <cite>IEEE Symposium on Information Visualization</cite>, 2004, <a href="https://doi.org/10.1109/INFVIS.2004.15">doi:10.1109/infvis.2004.15</a>.</li>
+                    <li id="ankerst">
+                      Ankerst, Mihael, et al. “Similarity Clustering of Dimensions for an Enhanced Visualization of Multidimensional Data.” <cite>Proceedings IEEE Symposium on Information Visualization (Cat. No.98TB100258)</cite>, 1998, <a href="https://doi.org/10.1109/INFVIS.1998.729559">doi:10.1109/infvis.1998.729559</a>.
+                    </li>
+                    <li id="dasgupta">
+                      Dasgupta, Aritra, and Robert Kosara. “Pargnostics: Screen-Space Metrics for Parallel Coordinates.” <cite>IEEE Transactions on Visualization and Computer Graphics</cite>, vol. 16, no. 6, 2010, pp. 1017–1026., <a href="https://doi.org/10.1109/TVCG.2010.184">doi:10.1109/tvcg.2010.184</a>.
+                    </li>
+                    <li id="heinrich">
+                      Heinrich, Julian, and Daniel Weiskopf. “State of the Art of Parallel Coordinates.” <cite>Eurographics</cite>, 2013, <a href="http://dx.doi.org/10.2312/conf/EG2013/stars/095-116">doi:10.2312/conf/EG2013/stars/095-116</a>.
+                    </li>
+                    <li id="oldford">
+                      Hurley, C. B., and R. W. Oldford. “Pairwise Display of High-Dimensional Information via Eulerian Tours and Hamiltonian Decompositions.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 19, no. 4, 2010, pp. 861–886., <a href="https://www.jstor.org/stable/25765378">doi:10.1198/jcgs.2010.09136</a>.
+                    </li>
+                    <li id="hurley">
+                      Hurley, Catherine B. “Clustering Visualizations of Multidimensional Data.” <cite>Journal of Computational and Graphical Statistics</cite>, vol. 13, no. 4, 2004, pp. 788–806., <a href="https://www.jstor.org/stable/27594078">doi:10.1198/106186004x12425</a>.
+                    </li>
+                    <li id="peng">
+                      Peng, Wei, et al. “Clutter Reduction in Multi-Dimensional Data Visualization Using Dimension Reordering.” <cite>IEEE Symposium on Information Visualization</cite>, 2004, <a href="https://doi.org/10.1109/INFVIS.2004.15">doi:10.1109/infvis.2004.15</a>.
+                    </li>
                 </ol>
 
                 <h3>Software</h3>

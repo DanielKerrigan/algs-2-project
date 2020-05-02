@@ -1,12 +1,12 @@
 /*
- * Parallel Coordinates
+ * Pair of parallel coordinate  axes.
  *
  * References:
  * https://observablehq.com/@d3/parallel-coordinates
  */
 
 
-function parallel() {
+function pair() {
   let margin = {
     top: 50,
     bottom: 50,
@@ -14,10 +14,9 @@ function parallel() {
     right: 50
   };
 
-  let width = 900 - margin.left - margin.right;
+  let width = 500 - margin.left - margin.right;
   let height = 500 - margin.top - margin.bottom;
   let columns = [];
-
   let color = '#5C068C';
 
   function chart(selection) {
@@ -48,10 +47,10 @@ function parallel() {
       }))
 
       const svg = d3.select(this)
-        .selectAll('.parallel')
+        .selectAll('.pair')
         .data([data])
         .join(enter => enter.append('svg')
-            .attr('class', 'parallel')
+            .attr('class', 'pair')
             .call(
               svg => svg.append('g')
                   .attr('class', 'vis-container')
@@ -65,12 +64,6 @@ function parallel() {
                         .call(h => h.append('g').attr('class', 'y-axes'))
                         .call(h => h.append('g').attr('class', 'x-axis'))
                   )
-                  .call(
-                    g => g.append('g')
-                        .attr('class', 'tooltip')
-                        .attr('font-size', '12px')
-                        .attr('pointer-events', 'none')
-                  )
             ));
 
       svg.attr('width', width + margin.left + margin.right)
@@ -78,7 +71,6 @@ function parallel() {
 
       const g = svg.select('.vis-container')
           .attr('transform', `translate(${margin.left},${margin.top})`)
-      const axesGroup = g.select('.axes');
 
       const t = g.transition().duration(500);
 
@@ -98,6 +90,8 @@ function parallel() {
               .attr('d', line)
           );
 
+      const axesGroup = g.select('.axes');
+
       const yAxes = columns.map(c => ({
         column: c,
         axis: d3.axisLeft(y.get(c))
@@ -109,11 +103,8 @@ function parallel() {
         .data(yAxes, d => d.column)
         .join('g')
           .attr('class', 'y-axis')
-          .call(
-            g => g.transition(t)
-                .attr('transform', d => `translate(${x(d.column)},0)`)
-          )
-          .each(function(d, i) {
+          .attr('transform', d => `translate(${x(d.column)},0)`)
+          .each(function(d) {
             d3.select(this)
                 .call(d.axis)
                 .call(g => {
@@ -137,26 +128,25 @@ function parallel() {
           .text(d => d)
           .attr('font-size', 10)
           .attr('y', -10)
-          .attr('text-anchor', 'middle')
-          .call(text => text.transition(t)
-              .attr('x', d => x(d)))
+          .attr('x', d => x(d))
+          .attr('text-anchor', 'middle');
     });
   }
 
   chart.width = function(w) {
-    if (!arguments.length) return w;
+    if (!arguments.length) return weight;
     width = w - margin.left - margin.right;
     return chart;
   }
 
   chart.height = function(h) {
-    if (!arguments.length) return h;
+    if (!arguments.length) return height;
     height = h - margin.top - margin.bottom;
     return chart;
   }
 
   chart.columns = function(c) {
-    if (!arguments.length) return c;
+    if (!arguments.length) return columns;
     columns = c;
     return chart;
   }

@@ -17,9 +17,25 @@ h2 {
 
 table {
     border-collapse: separate;
-    border-spacing: 15px 0;
+    border-spacing: 20px 5px;
+}
+
+tbody tr:hover {
+  color: red;
+}
+
+.clicked {
+  color: red;
 }
 
 img {
   display: block;
+}
+
+#edge-crossing-table-vis {
+  display: flex;
+}
+
+#axis-pair-vis {
+  flex-grow: 1;
 }

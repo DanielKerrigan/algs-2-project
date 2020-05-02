@@ -45,16 +45,45 @@ function edgeHistogram() {
 
 
 function edgeCrossingMatrix(cars) {
-  const div = d3.select('#edge-crossing-matrix');
-  const {counts, countsMap} = calculateEdgeCrossings(cars);
+  const div = d3.select('#edge-crossing-table-vis');
+  const vis = div.select('#axis-pair-vis');
+
+  const {counts} = calculateEdgeCrossings(cars);
+  counts.sort((a, b) => d3.ascending(a.crosses, b.crosses))
 
   div.select('tbody')
     .selectAll('tr')
-    .data(counts.sort((a, b) => d3.ascending(a.crosses, b.crosses)))
+    .data(counts)
     .join('tr')
       .call(tr => tr.append('td').text(d => d.axes[0]))
       .call(tr => tr.append('td').text(d => d.axes[1]))
       .call(tr => tr.append('td')
           .style('text-align', 'right')
-          .text(d => d3.format(',')(d.crosses)));
+          .text(d => d3.format(',')(d.crosses)))
+      .on('click', function (d) {
+        d3.selectAll('.clicked')
+          .classed('clicked', false);
+
+        d3.select(this).classed('clicked', true);
+
+        draw(d.axes);
+      })
+    .filter((d, i) => i === 0)
+      .classed('clicked', true);
+
+  const width = Math.max(vis.node().clientWidth, 400);
+  const height = Math.max(vis.node().clientHeight, 400);
+
+  const chart = pair()
+      .width(width)
+      .height(height);
+
+  draw(counts[0].axes)
+
+  function draw(axes) {
+    chart.columns(axes);
+
+    vis.datum(cars.data)
+        .call(chart);
+  }
 }
