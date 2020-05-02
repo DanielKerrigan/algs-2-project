@@ -21,11 +21,11 @@ table {
 }
 
 tbody tr:hover {
-  color: red;
+  color: steelblue;
 }
 
 .clicked {
-  color: red;
+  color: steelblue;
 }
 
 img {

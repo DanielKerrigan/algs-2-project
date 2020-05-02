@@ -4,8 +4,9 @@ Promise.all([
   const cars = {
     'columns': Object.keys(carsDataset[0])
       .filter(d => d !== 'label' && d !== 'origin'),
-    'data': carsDataset
+    'data': carsDataset,
   };
+  cars['crosses'] = calculateEdgeCrossings(cars);
 
   manager([cars]);
 });
@@ -15,6 +16,7 @@ function manager([cars]) {
   introduction(cars);
   edgeHistogram();
   edgeCrossingMatrix(cars);
+  osl2Demo(cars);
 }
 
 
@@ -48,8 +50,7 @@ function edgeCrossingMatrix(cars) {
   const div = d3.select('#edge-crossing-table-vis');
   const vis = div.select('#axis-pair-vis');
 
-  const {counts} = calculateEdgeCrossings(cars);
-  counts.sort((a, b) => d3.ascending(a.crosses, b.crosses))
+  const counts = cars.crosses.counts;
 
   div.select('tbody')
     .selectAll('tr')
@@ -86,4 +87,9 @@ function edgeCrossingMatrix(cars) {
     vis.datum(cars.data)
         .call(chart);
   }
+}
+
+function osl2Demo(cars) {
+  const div = d3.select('#osl2');
+  osl2Interactive(div, cars);
 }

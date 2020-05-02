@@ -15,6 +15,7 @@
         <script src="util.js" defer></script>
         <script src="data-processing.js" defer></script>
         <script src="visualizations/pair.js" defer></script>
+        <script src="visualizations/osl2.js" defer></script>
         <script src="visualizations/parallel.js" defer></script>
         <script src="visualizations/histogram-interactive.js" defer></script>
 
@@ -164,6 +165,15 @@
 
               <section id="algorithms">
                 <h3>Algorithms</h3>
+
+                <p>
+                  Given the complexity of the task, a brute force solution of trying every ordering may be too expensive. There are many algorithms that can be used to get an approximate solution. In <a href="#hurley">[5]</a>, Hurley notes that for interactive visualization, showing the data quickly and being responsive is important, so it is better to find a good ordering quickly than a near-optimal ordering slowly. She proposes an algorithm based on clustering. This algorithm starts with each axis in its own cluster. At each step, you merge the two clusters that have the pair of axes at their ends with the lowest weight. In the below demo, the possible pairs are listen in ascending order of edge crossings. The clusters are represented using colors.
+                </p>
+
+                <div id="osl2">
+                  <button id="osl2Step">Step</button>
+                  <button id="osl2Reset">Reset</button>
+                </div>
               </section>
 
             </section>
@@ -195,9 +205,15 @@
 
                 <h3>Software</h3>
                 <ul>
-                    <li>The code for this project is in the following <a href="https://github.com/DanielKerrigan/algs-2-project">GitHub repository</a>.</li>
-                    <li>I made the visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, the creator of D3. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>. The tooltips are also based on his <a href="https://observablehq.com/@d3/line-chart-with-tooltip">example line chart with tooltip</a>.</li>
-                    <li>The design of this site is based on a <a href="https://jgthms.com/web-design-in-4-minutes/">guide by Jeremy Thomas</a>.</li>
+                    <li>
+                      The code for this project is in the following <a href="https://github.com/DanielKerrigan/algs-2-project">GitHub repository</a>.
+                    </li>
+                    <li>
+                      I made the visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, the creator of D3. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>.
+                    </li>
+                    <li>
+                      The design of this site is based on a <a href="https://jgthms.com/web-design-in-4-minutes/">guide by Jeremy Thomas</a>.
+                    </li>
                 </ul>
 
                 <h3>Datasets</h3>

@@ -15,7 +15,7 @@ function calculateEdgeCrossings({columns, data}) {
 
         const lj = data[j][a];
         const rj = data[j][b];
- 
+
         if ((li < lj && ri > rj) || (li > lj && ri < rj)) {
           crosses++;
         }
@@ -25,11 +25,14 @@ function calculateEdgeCrossings({columns, data}) {
     return {
       axes: [a, b],
       crosses,
+      pair: `${a}-${b}`,
     };
   });
 
+  counts.sort((a, b) => d3.ascending(a.crosses, b.crosses));
+
   const countsMap = new Map(counts.map(d => {
-    return [`${d.axes[0]},${d.axes[1]}`, d.crosses]
+    return [d.pair, d.crosses]
   }))
 
   return {counts, countsMap};
