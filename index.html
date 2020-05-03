@@ -48,11 +48,11 @@
                 <h2>Introduction</h2>
 
                 <p>
-                  Parallel coordinates are a way to visualize multi-dimensional data. In the visualization, there is one axis for each dimension. Each object in the dataset represented with a polyline that connects the object's across each axis. Parallel coordinates are meant to help users detect patterns and trends in multi-dimensional data.
+                  Parallel coordinates are a way to visualize multi-dimensional data. In the visualization, there is one axis for each dimension. Each object in the dataset represented with a polyline that connects the object's values across each axis. Parallel coordinates are meant to help users detect patterns and trends in multi-dimensional data.
                 </p>
 
                 <p>
-                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any order. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier to detect with some axis orderings than others.
+                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any arrangement. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier to detect with some axis orderings than others.
                 </p>
 
                 <p>
@@ -87,7 +87,7 @@
                 <img src="diagrams/edge-crossing.svg">
 
                 <p>
-                  then in constant time, we know there is a line crossing if \((l_1 > l_2 \wedge r_1 < r_2) \vee (l_1 < l_2 \wedge r_1 > r_2))\). We are only concerned with intersections that occur between the axes. A brute force approach to get the total number of edge crossings between a pair of axis can therefore be done in \(O(n^2)\), where \(n\) is the number of elements in the dataset.
+                  then in constant time, we know there is a line crossing if \((l_1 > l_2 \wedge r_1 < r_2) \vee (l_1 < l_2 \wedge r_1 > r_2))\). We are only concerned with intersections that occur between the axes. A brute force approach to get the total number of edge crossings between a pair of axes can therefore be done in \(O(n^2)\), where \(n\) is the number of elements in the dataset.
                 </p>
 
                 <p>
@@ -158,7 +158,7 @@
 
                 <img src="diagrams/k5.svg">
 
-                Finding the order of the axes that minimizes the total number of edge crossings then becomes finding the shortest path through this graph that visits every node exactly once. That is, we want to find the shortest hamiltonian path. In [<a href="#hurley">5</a>], Hurley notes that this if we add an extra vertex to this graph and connect it to every other vertex with a weight of 0, then this becomes the traveling salesman problem.
+                Finding the order of the axes that minimizes the total number of edge crossings then becomes finding the shortest path through this graph that visits every node exactly once. That is, we want to find the shortest hamiltonian path. In [<a href="#hurley">5</a>], Hurley notes that if we add an extra vertex to this graph and connect it to every other vertex with a weight of 0, then this becomes the traveling salesman problem.
 
                 <img src="diagrams/k5-tsp.svg">
               </section>
@@ -173,11 +173,11 @@
                 <h4>Clustering</h4>
 
                 <p>
-                  In <a href="#hurley">[5]</a>, Hurley notes that for interactive visualization, showing the data quickly and being responsive is important, so it is better to find a good ordering quickly than a near-optimal ordering slowly. She proposes an algorithm based on clustering. This algorithm starts with each axis in its own cluster. At each step, you merge the two clusters that have the pair of axes at their ends with the lowest weight. Each cluster is ordered, so you can only join two clusters at their end points.
+                  In <a href="#hurley">[5]</a>, Hurley notes that for interactive visualization, showing the data quickly and being responsive is important, so it is better to find a good ordering quickly than a near-optimal ordering slowly. She proposes an algorithm based on clustering. This algorithm starts with each axis in its own cluster. At each step, you merge the two clusters that have the pair of available axes with the lowest weight. Each cluster is ordered, so you can only join two clusters at their end points.
                 </p>
 
                 <p>
-                  In the below demo, the possible pairs are listed in ascending order of edge crossings. The clusters are represented using colors. Pressing the "Step" button to joins the next two clusters. Axis pairs are crossed out as the algorithm tries to join on them.
+                  In the below demo, the possible pairs are listed in ascending order of edge crossings. The clusters are represented using colors. You can repeatedly press the "Step" button to join the next two clusters. Axis pairs are crossed out as the algorithm tries to join on them.
                 </p>
 
                 <div id="osl2">
