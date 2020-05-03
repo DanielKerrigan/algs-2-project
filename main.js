@@ -89,7 +89,46 @@ function edgeCrossingMatrix(cars) {
   }
 }
 
+
 function osl2Demo(cars) {
   const div = d3.select('#osl2');
+  const pc = d3.select('#osl2pc');
+
   osl2Interactive(div, cars);
+
+  const minOrder = [
+    'horsepower',
+    'displacement',
+    'cylinders',
+    'weight',
+    'year',
+    'mpg',
+    'acceleration'
+  ];
+
+  const maxOrder = [
+    'displacement',
+    'acceleration',
+    'horsepower',
+    'mpg',
+    'weight',
+    'year',
+    'cylinders'
+  ];
+
+  const chart = parallel().columns(minOrder);
+
+  pc.selectAll('.osl2MinOrMax')
+      .on('change', function () {
+        chart.columns(this.value === 'min' ? minOrder : maxOrder);
+        draw();
+      })
+
+  draw();
+
+  function draw() {
+    pc.datum(cars.data)
+      .call(chart);
+  }
+
 }

@@ -48,15 +48,15 @@
                 <h2>Introduction</h2>
 
                 <p>
-                  Parallel coordinates are a way to visualize multi-dimensional data. In the visualization, there is one axis for each dimension. Traditionally, the axes are vertical. Each object in the dataset represented with a polyline that connects the object's values in each dimension. Parallel coordinates are meant to help users detect patterns and trends in multi-dimensional data.
+                  Parallel coordinates are a way to visualize multi-dimensional data. In the visualization, there is one axis for each dimension. Each object in the dataset represented with a polyline that connects the object's across each axis. Parallel coordinates are meant to help users detect patterns and trends in multi-dimensional data.
                 </p>
 
                 <p>
-                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any order. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier to detect with some axes orderings than others.
+                  Multi-dimensional data often does not have an inherent ordering of the dimensions, so the axes in parallel coordinates can have any order. However, this order has a large impact on what the visualization looks like. Certain trends or patterns in the data can be easier to detect with some axis orderings than others.
                 </p>
 
                 <p>
-                  The parallel coordinates plot below is for a cars dataset. Above the visualization, there is a "Shuffle Axes" button. You can click that button randomly arrange the axes, which will give you a sense of the impact that axis order has on the visualization.
+                  The parallel coordinates plot below is for a dataset on cars. Above the visualization, there is a "Shuffle Axes" button. You can click that button to randomly arrange the axes, which will give you a sense of the impact that axis order has on the visualization.
                 </p>
 
                 <div>
@@ -65,11 +65,11 @@
                 </div>
 
                 <p>
-                  Given this, we can try to find the order of the axes that optimizes some desired property. This process involves calculating a weight or score for each pair of axes and then finding the ordering of axes that minimizes or maximizes the sum of the weights. There are many possible scoring methods. Dasgupta and Korsara propose metrics including number of edge crossings and angle of edge crossing [<a href="#dasgupta">2</a>], Hurley suggests maximizing the correlation between neighboring axes or minimizing total line length [<a href="#hurley">5</a>], Ankerst et al. propose similarity based measures [<a href="#ankerst">1</a>], and Peng et al. define a clutter metric based on number of outliers. The axis ordering section of Heinrich and Weiskopf's "State of the Art of Parallel Coordinates" was particularly helpful starting point [<a href="#heinrich">3</a>].
+                  Given this, we can try to find the order of the axes that optimizes some desired property. This process involves calculating a weight or score for each pair of axes and then finding the ordering of axes that minimizes or maximizes the sum of the weights. There are many possible scoring methods. Dasgupta and Korsara propose metrics including number of edge crossings and angle of edge crossing [<a href="#dasgupta">2</a>], Hurley suggests maximizing the correlation between neighboring axes or minimizing total line length [<a href="#hurley">5</a>], Ankerst et al. propose similarity based measures [<a href="#ankerst">1</a>], and Peng et al. define a clutter metric based on number of outliers [<a href="#peng">6</a>]. The axis ordering section of Heinrich and Weiskopf's "State of the Art of Parallel Coordinates" was particularly helpful starting point for this project [<a href="#heinrich">3</a>].
                 </p>
 
                 <p>
-                   In this project, I will focus on minimizing the number of between axis edge crossings. The intuition behind this is that having a lot of edge crossings can make the visualization difficult to read.
+                   I will focus on minimizing the number of between axis edge crossings. The intuition behind this is that having a lot of edge crossings can make the visualization difficult to read.
                 </p>
             </section>
 
@@ -96,7 +96,7 @@
 
                 <p>\[b_{ij} = |\{ k | \lfloor l_k \rfloor = i \wedge \lfloor r_k \rfloor = j\}|\]</p>
 
-                <p>\(b_{ij}\) represents the number of lines that go from pixel \(i\) on the left axis to pixel \(j\) on the right axis. The authors state that this histogram can be used to calculate the number of edge crossings between the two axis:</p>
+                <p>\(b_{ij}\) represents the number of lines that go from pixel \(i\) on the left axis to pixel \(j\) on the right axis. The authors state that this histogram can be used to calculate the number of edge crossings between the two axes:</p>
 
                 <p>
                   \[\text{# crossings} = \sum_{i=0}^{h-1} \sum_{j=0}^{h-1} \sum_{k=i+1}^{h-1} \sum_{l=j+1}^{h-1} b_{ij}b_{kl}\]
@@ -115,7 +115,7 @@
                 </p>
 
                 <p>
-                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [<a href="#dasgupta">2</a>]. In this example, there are two axes, A and B, that are each 5 "pixels" high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axes. Or, you can click the "Random" button to add random edges. As you add edges, the histogram to the right will update accordingly. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
+                  Below is an animation to see how the algorithm works, inspired by Fig. 1 in [<a href="#dasgupta">2</a>]. In this example, there are two axes, A and B, that are each 5 "pixels" high. To add an edge, you first click on a pixel in one axis and then click on a pixel in the other axis. Or, you can click the "Random" button to add random edges. As you add edges, the histogram to the right will update accordingly. Clicking "Calculate Crossings" will animate the steps the algorithm takes. \(b_{ij}\) is shown in blue and \(b_{kl}\) is shown in red when there is no crossing or green when there is a crossing.
                 </p>
 
                 <div id="edge-histogram">
@@ -127,7 +127,7 @@
                 </div>
 
                 <p>
-                  We can run our edge crossing algorithm of choice to get the number of crossings between each possible pair of axes. The below table shows the results for the cars dataset. You can click on a row of the table to visualize the edges between that pair of axes.
+                  We can run our edge crossing algorithm of choice to get the number of crossings between each possible pair of axes. The table below shows the results for the cars dataset. You can click on a row of the table to visualize the edges between that pair of axes.
                 </p>
 
                 <div id="edge-crossing-table-vis">
@@ -167,15 +167,51 @@
                 <h3>Algorithms</h3>
 
                 <p>
-                  Given the complexity of the task, a brute force solution of trying every ordering may be too expensive. There are many algorithms that can be used to get an approximate solution. In <a href="#hurley">[5]</a>, Hurley notes that for interactive visualization, showing the data quickly and being responsive is important, so it is better to find a good ordering quickly than a near-optimal ordering slowly. She proposes an algorithm based on clustering. This algorithm starts with each axis in its own cluster. At each step, you merge the two clusters that have the pair of axes at their ends with the lowest weight. In the below demo, the possible pairs are listen in ascending order of edge crossings. The clusters are represented using colors.
+                  Given the complexity of the task, a brute force solution of trying every ordering may be too expensive. There are many algorithms that can be used to get an approximate solution.
+                </p>
+
+                <h4>Clustering</h4>
+
+                <p>
+                  In <a href="#hurley">[5]</a>, Hurley notes that for interactive visualization, showing the data quickly and being responsive is important, so it is better to find a good ordering quickly than a near-optimal ordering slowly. She proposes an algorithm based on clustering. This algorithm starts with each axis in its own cluster. At each step, you merge the two clusters that have the pair of axes at their ends with the lowest weight. Each cluster is ordered, so you can only join two clusters at their end points.
+                </p>
+
+                <p>
+                  In the below demo, the possible pairs are listed in ascending order of edge crossings. The clusters are represented using colors. Pressing the "Step" button to joins the next two clusters. Axis pairs are crossed out as the algorithm tries to join on them.
                 </p>
 
                 <div id="osl2">
                   <button id="osl2Step">Step</button>
                   <button id="osl2Reset">Reset</button>
                 </div>
+
+                <p>
+                  If we instead sort the axis pairs in descending order of edge crossings, then the algorithm will attempt to maximize the number of crossings. You can compare the two outcomes by toggling the radio button below.
+                </p>
+
+                <div id="osl2pc">
+                  <div>
+                    <label>
+                      <input autocomplete="off" class="osl2MinOrMax" type="radio" name="osl2" value="min" checked>
+                      Min
+                    </label>
+                    <label>
+                      <input autocomplete="off" class="osl2MinOrMax" type="radio" name="osl2" value="max">
+                      Max
+                    </label>
+                  </div>
+                </div>
               </section>
 
+            </section>
+
+            <section id="improvements">
+              <h2>Potential ways to improve this project</h2>
+              <ul>
+                <li>Explain more algorithms for how to find a good axis ordering once we have the weights. For example, [<a href="#dasgupta">2</a>] uses a branch and bound, best first search algorithm and [<a href="#ankerst">1</a>] uses an algorithm inspired by how ants find shortest paths. Other algorithms for the traveling salesman problem could be explained as well.</li>
+                <li>Go into more depth on how this problem and ones similar to it relate to graph theory. [<a href="#oldford">4</a>] goes into more depth on this. For example, if we extended the parallel coordinates visualization to show all possible pairs of axes, how could we find a good ordering?</li>
+                <li>Explore more efficient algorithms for counting the number of edge crossings.</li>
+              </ul>
             </section>
 
             <section id="references">
@@ -209,7 +245,7 @@
                       The code for this project is in the following <a href="https://github.com/DanielKerrigan/algs-2-project">GitHub repository</a>.
                     </li>
                     <li>
-                      I made the visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, the creator of D3. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>.
+                      I made the interactive visualizations using <a href="https://d3js.org">D3.js</a>. I referenced the <a href="https://observablehq.com/@d3/parallel-coordinates">parallel coordinates implementation by Mike Bostock</a>, specifically for how to style the axis tick marks. My implementation of parallel coordinates follows Bostock's <a href="https://bost.ocks.org/mike/chart/">reusable charts pattern</a>.
                     </li>
                     <li>
                       The design of this site is based on a <a href="https://jgthms.com/web-design-in-4-minutes/">guide by Jeremy Thomas</a>.
@@ -219,13 +255,13 @@
                 <h3>Datasets</h3>
                 <ul>
                     <li><a href="http://lib.stat.cmu.edu/datasets/">Cars</a></li>
-                    <li>
+                    <!--<li>
                         <a href="https://archive.ics.uci.edu/ml/datasets/Wine+Quality">Wine Quality</a>
 
                         <ul>
                             <li>Cortez, Paulo, et al. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” <cite>Decision Support Systems</cite>, vol. 47, no. 4, 2009, pp. 547–553., <a href="https://doi.org/10.1016/j.dss.2009.05.016">doi:10.1016/j.dss.2009.05.016</a>.</li>
                         </ul>
-                    </li>
+                    </li>-->
                 </ul>
             </section>
         </main>

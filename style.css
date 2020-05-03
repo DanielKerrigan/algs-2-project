@@ -39,3 +39,7 @@ img {
 #axis-pair-vis {
   flex-grow: 1;
 }
+
+.suggestion {
+  color: green;
+}

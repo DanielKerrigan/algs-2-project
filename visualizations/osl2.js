@@ -3,9 +3,8 @@ function osl2Interactive(div, data) {
   let axisToCluster;
   let actions;
   let done;
-
-  const scoreList = data.crosses.counts.map(d => ({...d, used: false}));
-  const scoreMap = new Map(scoreList.map(d => [d.pair, d]));
+  let scoreList;
+  // const scoreMap = new Map(scoreList.map(d => [d.pair, d]));
 
   const margin = { top: 10, bottom: 10, left: 10, right: 10 };
 
@@ -110,7 +109,7 @@ function osl2Interactive(div, data) {
 
 
   function reset() {
-    scoreList.forEach(d => d.used = false);
+    scoreList = data.crosses.counts.map(d => ({...d, used: false}));
     actions = [];
     clusters = data.columns.map(d => [d]);
     axisToCluster = new Map(data.columns.map((d, i) => [d, i]));
@@ -128,7 +127,6 @@ function osl2Interactive(div, data) {
         pair.used = true;
 
         const [axis1, axis2] = pair.axes;
-        const duo = pair.pair;
 
         const ends = getEnds();
         const i = axisToCluster.get(axis1);
