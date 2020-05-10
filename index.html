@@ -177,11 +177,12 @@
                 </p>
 
                 <p>
-                  In the below demo, the possible pairs are listed in ascending order of edge crossings. The clusters are represented using colors. You can repeatedly press the "Step" button to join the next two clusters. Axis pairs are crossed out as the algorithm tries to join on them.
+                  In the below demo, the possible pairs are listed in ascending order of edge crossings. The clusters are represented using colors. You can use the "Next" and "Back" buttons to step through the clustering. At each step, the algorithm attempts to join the next pair of axes. This isn't always possible, such as when one of the axes is in the middle of a cluster or when the axes are already in the same cluster. After a pair is attempted, it is grayed out.
                 </p>
 
                 <div id="osl2">
-                  <button id="osl2Step">Step</button>
+                  <button id="osl2Back">Back</button>
+                  <button id="osl2Forward">Next</button>
                   <button id="osl2Reset">Reset</button>
                 </div>
 

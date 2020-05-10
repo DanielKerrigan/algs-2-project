@@ -1,10 +1,6 @@
 function osl2Interactive(div, data) {
-  let clusters;
-  let axisToCluster;
-  let actions;
-  let done;
-  let scoreList;
-  // const scoreMap = new Map(scoreList.map(d => [d.pair, d]));
+  let index = 0;
+  const states = getStates();
 
   const margin = { top: 10, bottom: 10, left: 10, right: 10 };
 
@@ -29,19 +25,29 @@ function osl2Interactive(div, data) {
       .domain(d3.range(data.columns.length))
       .range(d3.schemeCategory10);
 
+  const backButton = div.select('#osl2Back');
+  const forwardButton = div.select('#osl2Forward');
   const resetButton = div.select('#osl2Reset');
 
   resetButton
       .on('click', function() {
         reset();
-        update();
       });
 
-  const stepButton = div.select('#osl2Step');
-
-  stepButton
+  forwardButton
     .on('click', function() {
-      step();
+      if (index < states.length - 1) {
+        index++;
+        update(states[index]);
+      }
+    });
+
+  backButton
+    .on('click', function() {
+      if (index > 0) {
+        index--;
+        update(states[index]);
+      }
     });
 
   table.append('text')
@@ -58,122 +64,126 @@ function osl2Interactive(div, data) {
 
 
   reset();
-  update();
 
 
-  function update() {
-    updatePairs();
-    updateOrdering();
-    updateActions();
+  function reset() {
+    index = 0;
+    update(states[index]);
   }
 
 
-  function updatePairs() {
+  function update(state) {
+    updatePairs(state);
+    updateOrdering(state);
+    updateActions(state);
+  }
+
+
+  function updatePairs(state) {
     table.selectAll('.pairing')
-      .data(scoreList)
+      .data(state.scoreList)
       .join('text')
         .attr('class', 'pairing')
-        .attr('text-decoration', d => d.used ? 'line-through' : 'none')
+        .attr('fill', d => d.used ? 'silver' : 'black')
         .attr('y', (d, i) => (i + 1) * 17)
         .text(d => d.pair);
   }
 
 
-  function updateOrdering() {
+  function updateOrdering(state) {
     ordering.selectAll('.axis')
-      .data(clusters.flat(), d => d)
+      .data(state.clusters.flat(), d => d)
       .join(
         enter => enter.append('text')
             .attr('class', 'axis')
             .attr('y', (d, i) => (i + 1) * 17)
-            .attr('fill', d => color(axisToCluster.get(d)))
+            .attr('fill', d => color(state.axisToCluster.get(d)))
             .text(d => d),
         update => update
-            .attr('fill', d => color(axisToCluster.get(d)))
+            .attr('fill', d => color(state.axisToCluster.get(d)))
             .call(text => text.transition()
-                .duration(500)
+                .duration(750)
                 .attr('y', (d, i) => (i + 1) * 17)),
         exit => exit.remove()
       );
   }
 
 
-  function updateActions() {
+  function updateActions(state) {
     action.selectAll('.action')
-      .data(actions)
+      .data(state.actions)
       .join('text')
         .attr('class', 'action')
         .attr('y', (d, i) => (i + 1) * 17)
         .text(d => d);
   }
 
+  function getStates() {
+    const N = data.crosses.counts.length;
 
-  function reset() {
-    scoreList = data.crosses.counts.map(d => ({...d, used: false}));
-    actions = [];
-    clusters = data.columns.map(d => [d]);
-    axisToCluster = new Map(data.columns.map((d, i) => [d, i]));
-    done = false;
-    stepButton.attr('disabled', null);
-  }
+    const states = [
+      {
+        scoreList: data.crosses.counts.map(d => ({...d, used: false})),
+        actions: [],
+        clusters: data.columns.map(d => [d]),
+        axisToCluster: new Map(data.columns.map((d, i) => [d, i])),
+      }
+    ];
 
+    for (let pos = 0; pos < N; pos++) {
+      const prevState = states[pos];
+      const nextState = {
+        scoreList: prevState.scoreList.map(d => ({...d})),
+        actions: prevState.actions.slice(),
+        clusters: prevState.clusters.map(d => d.slice()),
+        axisToCluster: new Map(prevState.axisToCluster),
+      };
 
-  async function step() {
-    stepButton.attr('disabled', true);
+      states.push(nextState);
 
-    for (let i = 0; i < scoreList.length; i++) {
-      const pair = scoreList[i];
-      if (!pair.used) {
-        pair.used = true;
+      const pair = nextState.scoreList[pos];
+      pair.used = true;
 
-        const [axis1, axis2] = pair.axes;
+      const [axis1, axis2] = pair.axes;
 
-        const ends = getEnds();
-        const i = axisToCluster.get(axis1);
-        const j = axisToCluster.get(axis2);
+      const ends = getEnds(nextState.clusters);
+      const i = nextState.axisToCluster.get(axis1);
+      const j = nextState.axisToCluster.get(axis2);
 
-        if (ends.has(axis1) && ends.has(axis2) && i !== j) {
-          const ci = clusters[i];
-          const cj = clusters[j];
+      if (ends.has(axis1) && ends.has(axis2) && i !== j) {
+        const ci = nextState.clusters[i];
+        const cj = nextState.clusters[j];
 
-          cj.forEach(a => {
-            axisToCluster.set(a, i);
-          });
+        cj.forEach(a => {
+          nextState.axisToCluster.set(a, i);
+        });
 
-          clusters[j] = [];
+        nextState.clusters[j] = [];
 
-          if (ci[0] === axis1 && cj[0] === axis2) {
-            clusters[i] = cj.reverse().concat(ci);
-          } else if (ci[ci.length - 1] === axis1 && cj[0] === axis2) {
-            clusters[i] = ci.concat(cj);
-          } else if (ci[0] === axis1 && cj[cj.length - 1] === axis2) {
-            clusters[i] = cj.concat(ci);
-          } else {
-            clusters[i] = ci.concat(cj.reverse());
-          }
-
-          actions.push(`Join ${axis1} and ${axis2}`);
-
-          if (clusters[i].length === data.columns.length) {
-            actions.push(`Done`);
-            done = true;
-          } else {
-            stepButton.attr('disabled', null);
-          }
-
-          update();
-
-          return;
+        if (ci[0] === axis1 && cj[0] === axis2) {
+          nextState.clusters[i] = cj.reverse().concat(ci);
+        } else if (ci[ci.length - 1] === axis1 && cj[0] === axis2) {
+          nextState.clusters[i] = ci.concat(cj);
+        } else if (ci[0] === axis1 && cj[cj.length - 1] === axis2) {
+          nextState.clusters[i] = cj.concat(ci);
         } else {
-          actions.push(`Cannot join ${axis1} and ${axis2}`);
-          updatePairs();
-          updateActions();
-          await sleep(1500);
+          nextState.clusters[i] = ci.concat(cj.reverse());
         }
+
+        nextState.actions.push(`Join ${axis1} and ${axis2}`);
+
+        if (nextState.clusters[i].length === data.columns.length) {
+          nextState.actions.push(`Done`);
+          break;
+        }
+      } else {
+        nextState.actions.push(`Cannot join ${axis1} and ${axis2}`);
       }
     }
 
-    function getEnds() {
+    return states;
+
+    function getEnds(clusters) {
       const ends = new Set();
 
       clusters.forEach(c => {
